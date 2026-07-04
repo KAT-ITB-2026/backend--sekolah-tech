@@ -1,16 +1,16 @@
 {
-  "id": "f7091956-2f2e-491a-b984-bab059a00eba",
+  "id": "9e6e4d91-1c88-4909-8be5-42133439da22",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.todo": {
-      "name": "todo",
+    "public.books": {
+      "name": "books",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "varchar(128)",
           "primaryKey": true,
           "notNull": true
         },
@@ -20,30 +20,38 @@
           "primaryKey": false,
           "notNull": true
         },
-        "description": {
-          "name": "description",
+        "author": {
+          "name": "author",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "published_year": {
+          "name": "published_year",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "is_completed": {
-          "name": "is_completed",
+        "is_available": {
+          "name": "is_available",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": true
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
