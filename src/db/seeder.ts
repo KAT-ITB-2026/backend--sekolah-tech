@@ -1,5 +1,5 @@
 import { db } from './drizzle.js';
-import { book } from './schema/book.schema.js';
+import { books } from './schema/book.schema.js';
 
 const sampleBooks = [
   {
@@ -36,21 +36,21 @@ const sampleBooks = [
 
 export async function seedBooks() {
   try {
-    console.log('🌱 Starting library seeding...');
+    console.log('Starting library seeding...');
 
     // Test database connection first
-    console.log('🔌 Testing database connection...');
+    console.log('Testing database connection...');
 
     // Clear existing books
-    await db.delete(book);
-    console.log('🗑️  Cleared existing books');
+    await db.delete(books);
+    console.log('Cleared existing books');
 
     // Insert sample books
-    const insertedBooks = await db.insert(book).values(sampleBooks).returning();
+    const insertedBooks = await db.insert(books).values(sampleBooks).returning();
     return insertedBooks;
   } catch (error) {
-    console.error('❌ Error seeding books:', error);
-    console.error('💡 Make sure:');
+    console.error('Error seeding books:', error);
+    console.error('Make sure:');
     console.error('   - Your database is running (docker-compose up -d)');
     console.error(
       '   - You have run migrations (bun db:push or bun db:migrate)',
@@ -61,7 +61,7 @@ export async function seedBooks() {
 }
 
 // Always run the seeder when this file is executed
-console.log('🚀 Running database seeder...');
+console.log('Running database seeder...');
 seedBooks()
   .then(() => {
     console.log('🎉 Seeding completed successfully!');
