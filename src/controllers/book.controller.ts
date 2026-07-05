@@ -1,0 +1,26 @@
+import { getBooks, getKondisi } from "~/repositories/book.repository";
+import { getBookRoute, getCondition } from "~/routes/book.route";
+import { createRouter } from "~/utils/router-factory";
+
+export const bookRouter = createRouter();
+
+bookRouter.openapi(getCondition, async (c) => {
+    try {
+        const data = await getKondisi();
+        return c.json(data, 200);
+    } catch (error) {
+        console.error('Galat mengambil total buku:', error);
+        return c.json({ error: 'Internal server error' }, 500);
+    }
+});
+
+bookRouter.openapi(getBookRoute, async (c) => {
+    try{
+        const query = c.req.valid('query');
+        const booksData = await getBooks(query.isAvailable);
+        return c.json(booksData, 200);
+    } catch (error){
+        console.error('Galat mengambil buku:', error);
+        return c.json({error: 'Internal server error'}, 500);
+    }
+})
