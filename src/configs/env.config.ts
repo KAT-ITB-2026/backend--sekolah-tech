@@ -10,7 +10,7 @@ const EnvSchema = z.object({
     .transform((value) => JSON.parse(value))
     .pipe(z.array(z.string().url())),
 });
-
+//test
 dotenv.config({
   quiet: true,
 });
