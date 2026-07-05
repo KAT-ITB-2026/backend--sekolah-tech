@@ -1,6 +1,7 @@
 import { eq, count } from "drizzle-orm";
 import { db } from "~/db/drizzle";
 import { books } from "~/db/schema/book.schema";
+import { createErrorResponse } from "~/utils/error-response-factory";
 
 export const getKondisi = async () => {
     const [totalBooks] = await db.select({ value: count() }).from(books);
@@ -33,3 +34,22 @@ export const getBooks = async (avaliable?: boolean) => {
 
   return await baseQuery;
 };
+
+export const getBookById = async (bookid: string | undefined) => {
+    if(!bookid){
+        createErrorResponse("GENERIC", "Need Book ID");
+        return;
+    }
+    const baseQuery = db
+        .select({
+        id: books.id,
+        title: books.title,
+        author: books.author,
+        yearpublish: books.publishedYear, 
+        avaliable: books.isAvailable,    
+        created: books.createdAt,         
+        updated: books.updatedAt          
+        })
+        .from(books).where(eq(books.id, bookid));
+    return await baseQuery;
+}
