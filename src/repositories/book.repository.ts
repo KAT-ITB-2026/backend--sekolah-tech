@@ -2,6 +2,7 @@ import { eq, count } from "drizzle-orm";
 import { db } from "~/db/drizzle";
 import { books } from "~/db/schema/book.schema";
 import { createErrorResponse } from "~/utils/error-response-factory";
+import { sql } from "drizzle-orm";
 import { bookSchema } from "~/routes/book.route";
 import { PgUpdateBase } from "drizzle-orm/pg-core";
 
@@ -61,18 +62,15 @@ export const insertNewBook = async(
   booktitle: string, 
   bookauthor: string,
   yearpublish: number | null,
-  available: boolean | undefined,
-  created: Date | undefined,
-  updated: Date | undefined,
   ) => {
     const baseQuery = db.insert(books).values({
       id:bookid,
       title:booktitle,
       author:bookauthor,
       publishedYear:yearpublish,
-      isAvailable:available,
-      createdAt:created,
-      updatedAt:updated,
+      isAvailable:true,
+      createdAt:sql`CURRENT_TIMESTAMP`,
+      updatedAt:sql`CURRENT_TIMESTAMP`,
     })
     return await baseQuery;
 }
