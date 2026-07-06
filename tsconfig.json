@@ -14,7 +14,6 @@
     "paths": {
       "~/*": ["./src/*"]
     },
-    "baseUrl": ".",
     "noImplicitAny": true
   },
   "exclude": ["node_modules"]
