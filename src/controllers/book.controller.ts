@@ -39,8 +39,8 @@ bookRouter.openapi(getById, async (c) => {
 
 bookRouter.openapi(newBook, async (c) => {
     try{
-        const {id,title,author,yearpublish} = c.req.valid("query");
-        const booksData = await insertNewBook(id,title,author,yearpublish);
+        const {title,author,yearpublish} = c.req.valid("query");
+        const booksData = await insertNewBook(title,author,yearpublish);
         return c.json(booksData,200);
     } catch (error){
         console.error('Galat memasukan buku:', error);

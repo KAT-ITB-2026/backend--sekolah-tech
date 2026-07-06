@@ -58,13 +58,11 @@ export const getBookById = async (bookid: string | undefined) => {
 }
 
 export const insertNewBook = async(
-  bookid: string,
   booktitle: string, 
   bookauthor: string,
   yearpublish: number | null,
   ) => {
     const baseQuery = db.insert(books).values({
-      id:bookid,
       title:booktitle,
       author:bookauthor,
       publishedYear:yearpublish,

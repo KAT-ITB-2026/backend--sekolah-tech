@@ -99,10 +99,9 @@ export const newBook = createRoute({
     path:'/books',
     request: {
         query: z.object({
-            id: z.string(),
             title: z.string(),
             author: z.string(),
-            yearpublish: z.coerce.number().nullable(),
+            yearpublish: z.coerce.number(),
         })
     },
     responses:{
