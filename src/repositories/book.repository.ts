@@ -2,6 +2,8 @@ import { eq, count } from "drizzle-orm";
 import { db } from "~/db/drizzle";
 import { books } from "~/db/schema/book.schema";
 import { createErrorResponse } from "~/utils/error-response-factory";
+import { bookSchema } from "~/routes/book.route";
+import { PgUpdateBase } from "drizzle-orm/pg-core";
 
 export const getKondisi = async () => {
     const [totalBooks] = await db.select({ value: count() }).from(books);
@@ -51,5 +53,26 @@ export const getBookById = async (bookid: string | undefined) => {
         updated: books.updatedAt          
         })
         .from(books).where(eq(books.id, bookid));
+    return await baseQuery;
+}
+
+export const insertNewBook = async(
+  bookid: string,
+  booktitle: string, 
+  bookauthor: string,
+  yearpublish: number | null,
+  available: boolean | undefined,
+  created: Date | undefined,
+  updated: Date | undefined,
+  ) => {
+    const baseQuery = db.insert(books).values({
+      id:bookid,
+      title:booktitle,
+      author:bookauthor,
+      publishedYear:yearpublish,
+      isAvailable:available,
+      createdAt:created,
+      updatedAt:updated,
+    })
     return await baseQuery;
 }

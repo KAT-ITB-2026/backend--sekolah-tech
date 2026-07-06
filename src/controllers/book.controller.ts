@@ -1,5 +1,5 @@
-import { getBookById, getBooks, getKondisi } from "~/repositories/book.repository";
-import { getBookRoute, getById, getCondition } from "~/routes/book.route";
+import { getBookById, getBooks, getKondisi, insertNewBook } from "~/repositories/book.repository";
+import { getBookRoute, getById, getCondition, newBook } from "~/routes/book.route";
 import { createRouter } from "~/utils/router-factory";
 
 export const bookRouter = createRouter();
@@ -33,6 +33,17 @@ bookRouter.openapi(getById, async (c) => {
         return c.json(booksData, 200);
     } catch (error){
         console.error('Galat mengambil buku:', error);
+        return c.json({error: 'Internal server error'}, 500);
+    }
+})
+
+bookRouter.openapi(newBook, async (c) => {
+    try{
+        const {id,title,author,yearpublish,avaliable,created,updated} = c.req.valid("query");
+        const booksData = await insertNewBook(id,title,author,yearpublish,avaliable,created,updated);
+        return c.json(booksData,200);
+    } catch (error){
+        console.error('Galat memasukan buku:', error);
         return c.json({error: 'Internal server error'}, 500);
     }
 })
