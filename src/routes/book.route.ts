@@ -144,3 +144,26 @@ export const editBook = createRoute({
         500: createErrorResponse('GENERIC', 'Internal Server Error'),
     }
 })
+
+export const deleteBook = createRoute({
+    operationId:'deleteBook',
+    tags: ['books'],
+    method: 'post',
+    path: '/api/api/books',
+    request:{
+        query: z.object({
+            id:z.string()
+        })
+    },
+    responses:{
+        200:{
+            description: 'Menghapus buku',
+            content:{
+                'application/json':{
+                    schema:z.array(bookSchema)
+                }
+            }
+        },
+        500:createErrorResponse('GENERIC', 'Internal Server Error'),
+    }
+})

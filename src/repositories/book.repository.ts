@@ -90,3 +90,12 @@ export const patchBook = async(
   }).where(eq(books.id, bookid));
   return await baseQuery;
 }
+
+export const removeBook = async(bookid: string | undefined)=>{
+  if(!bookid){
+    createErrorResponse("GENERIC", "Need Book ID");
+    return;
+  }
+  const baseQuery = db.delete(books).where(eq(books.id, bookid));
+  return await baseQuery;
+}
