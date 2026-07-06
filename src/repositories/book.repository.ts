@@ -74,3 +74,19 @@ export const insertNewBook = async(
     })
     return await baseQuery;
 }
+
+export const patchBook = async(
+  bookid: string,
+  booktitle: string, 
+  bookauthor: string,
+  isavaliable: boolean,
+  yearpublish: number | null,
+) => {
+  const baseQuery = db.update(books).set({
+    title:booktitle,
+    author:bookauthor,
+    isAvailable:isavaliable,
+    publishedYear:yearpublish,
+  }).where(eq(books.id, bookid));
+  return await baseQuery;
+}

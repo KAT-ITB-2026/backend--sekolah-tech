@@ -5,7 +5,7 @@ export const bookSchema = z.object({
     id: z.string(),
     title: z.string(),
     author: z.string(),
-    yearpublish: z.coerce.number().nullable(),
+    yearpublish: z.coerce.number(),
     avaliable: z.coerce.boolean(),
     created: z.coerce.string().datetime(),
     updated: z.coerce.string().datetime(),
@@ -122,13 +122,14 @@ export const editBook = createRoute({
     operationId: 'editBook',
     tags: ['books'],
     method: 'post',
-    path:'/books',
+    path:'/api/books',
     request: {
         query: z.object({
             id:z.string(),
             title: z.string(),
             author: z.string(),
-            yearpublish: z.coerce.number().nullable(),
+            isavaliable: z.coerce.boolean(),
+            yearpublish: z.coerce.number(),
         })
     },
     responses:{
