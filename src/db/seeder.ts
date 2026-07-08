@@ -46,7 +46,10 @@ export async function seedBooks() {
     console.log('Cleared existing books');
 
     // Insert sample books
-    const insertedBooks = await db.insert(books).values(sampleBooks).returning();
+    const insertedBooks = await db
+      .insert(books)
+      .values(sampleBooks)
+      .returning();
     return insertedBooks;
   } catch (error) {
     console.error('Error seeding books:', error);
