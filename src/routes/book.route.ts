@@ -45,6 +45,56 @@ export const createBookRoute = createRoute({
   },
 });
 
+export const updateBookParamsSchema = z.object({
+  id: z.string(),
+});
+
+export const updateBookBodySchema = z.object({
+  title: z.string().nullable(),
+  author: z.string().nullable(),
+  isAvailable: z.boolean().nullable(),
+  publishedYear: z.number().nullable(),
+});
+
+export const updateBookRoute = createRoute({
+  operationId: 'updateBook',
+  tags: ['books'],
+  method: 'patch',
+  path: '/books/{id}',
+  request: {
+    params: updateBookParamsSchema,
+    body: {
+      content: {
+        'application/json': {
+          schema: updateBookBodySchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: z.object({
+            book: z.object({
+              id: z.string(),
+              title: z.string(),
+              author: z.string(),
+              publishedYear: z.number().nullable(),
+              isAvailable: z.boolean(),
+              createdAt: z.string(),
+              updatedAt: z.string(),
+            }),
+          }),
+        },
+      },
+      description: 'Successfully updated book',
+    },
+    404: createErrorResponse('GENERIC', 'Book not found'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
+
 export const getBookByIdParamsSchema = z.object({
   id: z.string(),
 });
