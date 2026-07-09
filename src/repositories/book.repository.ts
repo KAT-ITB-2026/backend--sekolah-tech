@@ -14,3 +14,19 @@ export const getBookById = async (id: string) => {
   const result = await db.select().from(books).where(eq(books.id, id));
   return result[0];
 };
+
+export const createBook = async (input: {
+  title: string;
+  author: string;
+  publishedYear?: number;
+}) => {
+  const result = await db
+    .insert(books)
+    .values({
+      title: input.title,
+      author: input.author,
+      publishedYear: input.publishedYear,
+    })
+    .returning();
+  return result[0];
+};

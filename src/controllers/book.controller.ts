@@ -1,8 +1,29 @@
-import { getAllBooks, getBookById } from '~/repositories/book.repository';
-import { getAllBooksRoute, getBookByIdRoute } from '~/routes/book.route';
+import {
+  createBook,
+  getAllBooks,
+  getBookById,
+} from '~/repositories/book.repository';
+import {
+  createBookRoute,
+  getAllBooksRoute,
+  getBookByIdRoute,
+} from '~/routes/book.route';
 import { createRouter } from '~/utils/router-factory';
 
 export const bookRouter = createRouter();
+
+bookRouter.openapi(createBookRoute, async (c) => {
+  try {
+    const body = c.req.valid('json');
+    const book = await createBook(body);
+    return c.json({ book }, 201);
+  } catch (error) {
+    if (error instanceof Error) {
+      return c.json({ error: error.message }, 500);
+    }
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
 
 bookRouter.openapi(getAllBooksRoute, async (c) => {
   try {
