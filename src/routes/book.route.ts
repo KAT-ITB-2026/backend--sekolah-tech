@@ -1,6 +1,42 @@
 import { createRoute, z } from '@hono/zod-openapi';
 import { createErrorResponse } from '~/utils/error-response-factory';
 
+export const getBookByIdParamsSchema = z.object({
+  id: z.string(),
+});
+
+export const getBookByIdRoute = createRoute({
+  operationId: 'getBookById',
+  tags: ['books'],
+  method: 'get',
+  path: '/books/{id}',
+  request: {
+    params: getBookByIdParamsSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: z.object({
+            book: z.object({
+              id: z.string(),
+              title: z.string(),
+              author: z.string(),
+              publishedYear: z.number().nullable(),
+              isAvailable: z.boolean(),
+              createdAt: z.string(),
+              updatedAt: z.string(),
+            }),
+          }),
+        },
+      },
+      description: 'Successfully fetched book by id',
+    },
+    404: createErrorResponse('GENERIC', 'Book not found'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
+
 export const getAllBooksQuerySchema = z.object({
   isAvailable: z.coerce.boolean().optional(),
 });
