@@ -95,6 +95,34 @@ export const updateBookRoute = createRoute({
   },
 });
 
+export const deleteBookParamsSchema = z.object({
+  id: z.string(),
+});
+
+export const deleteBookRoute = createRoute({
+  operationId: 'deleteBook',
+  tags: ['books'],
+  method: 'delete',
+  path: '/books/{id}',
+  request: {
+    params: deleteBookParamsSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: z.object({
+            message: z.string(),
+          }),
+        },
+      },
+      description: 'Successfully deleted book',
+    },
+    404: createErrorResponse('GENERIC', 'Book not found'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
+
 export const getBookByIdParamsSchema = z.object({
   id: z.string(),
 });

@@ -59,3 +59,11 @@ export const updateBook = async (
     .returning();
   return result[0];
 };
+
+export const deleteBook = async (id: string) => {
+  const result = await db
+    .delete(books)
+    .where(eq(books.id, id))
+    .returning();
+  return result[0];
+};

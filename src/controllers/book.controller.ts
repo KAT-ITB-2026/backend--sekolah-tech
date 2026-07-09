@@ -1,11 +1,13 @@
 import {
   createBook,
+  deleteBook,
   getAllBooks,
   getBookById,
   updateBook,
 } from '~/repositories/book.repository';
 import {
   createBookRoute,
+  deleteBookRoute,
   getAllBooksRoute,
   getBookByIdRoute,
   updateBookRoute,
@@ -36,6 +38,22 @@ bookRouter.openapi(updateBookRoute, async (c) => {
       return c.json({ error: 'Book not found' }, 404);
     }
     return c.json({ book }, 200);
+  } catch (error) {
+    if (error instanceof Error) {
+      return c.json({ error: error.message }, 500);
+    }
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+bookRouter.openapi(deleteBookRoute, async (c) => {
+  try {
+    const { id } = c.req.valid('param');
+    const book = await deleteBook(id);
+    if (!book) {
+      return c.json({ error: 'Book not found' }, 404);
+    }
+    return c.json({ message: 'Book deleted successfully' }, 200);
   } catch (error) {
     if (error instanceof Error) {
       return c.json({ error: error.message }, 500);
