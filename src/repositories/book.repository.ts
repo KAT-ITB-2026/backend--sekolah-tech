@@ -8,3 +8,16 @@ export const getAllBooks = async (isAvailable?: boolean) => {
     }
     return await db.select().from(books);
 }
+
+export const getBookById = async (id: string) => {
+    return await db.select().from(books).where(eq(books.id, id));
+}
+
+export const createBook = async (book: { title: string, author: string, publishedYear?: number }) => {
+    const newBook = await db.insert(books).values({
+        title: book.title,
+        author: book.author,
+        publishedYear: book.publishedYear,
+    });
+    return newBook;
+}
