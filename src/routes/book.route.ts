@@ -10,6 +10,7 @@ export const bookSchema = z.object({
     createdAt : z.string(),
     updatedAt : z.string(),
 })
+.openapi('Book');
 
 export const getAllBooksRoute = createRoute({
   operationId: 'getAllBooks',
@@ -35,4 +36,31 @@ export const getAllBooksRoute = createRoute({
     400: createErrorResponse('UNION', 'Bad request error'),
     500: createErrorResponse('GENERIC', 'Internal server error'),
   },
+});
+
+export const getBookByIdRoute = createRoute({
+  operationId: 'getBookById',
+  tags: ['books'],
+  method: 'get',
+  path: '/books/:id',
+  request: {
+    query: z.object({
+        id: z.string(),
+    }),
+  },
+    responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: z.object({
+            books: z.array(bookSchema),
+          }),
+        },
+      },
+      description : 'Retrieved book by ID',
+    },
+    400: createErrorResponse('UNION', 'Bad request error'),
+    404: createErrorResponse('GENERIC', 'Book not found'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  }
 });
