@@ -1,0 +1,21 @@
+import { z } from '@hono/zod-openapi';
+
+export const BookSchema = z.object({
+    id: z.string(),
+    title: z.string(),
+    author: z.string(),
+    publishedYear: z.number().int().nullable(),
+    isAvailable: z.boolean(),
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime(),
+}).openapi("Book");
+
+export const GetBooksQuerySchema = z.object({
+    isAvailable: z.enum(['true', 'false'])
+    .transform((val) => val === 'true')
+    .optional()
+}).openapi("BooksQuerySchema")
+
+export const BooksResponseSchema = z.object({
+    books : z.array(BookSchema),
+})
