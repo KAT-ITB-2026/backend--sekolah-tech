@@ -29,3 +29,10 @@ export const CreateBookBodySchema = z.object({
     author: z.string(),
     publishedYear: z.number().int().optional(),
 }).openapi("CreateBookBody");
+
+export const UpdateBookBodySchema = z.object({
+    title: z.string().nullable().optional(),
+    author: z.string().nullable().optional(),
+    isAvailable: z.boolean().nullable().optional(),
+    publishedYear: z.number().int().nullable().optional(),
+}).openapi("UpdateBookBody");
