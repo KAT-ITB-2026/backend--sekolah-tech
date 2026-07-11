@@ -21,3 +21,23 @@ export const createBook = async (book: { title: string, author: string, publishe
     });
     return newBook;
 }
+
+export const editBook = async (id: string, book: { title?: string, author?: string, publishedYear?: number, isAvailable?: boolean }) => {
+    const updateData: { title?: string, author?: string, publishedYear?: number, isAvailable?: boolean } = {};
+
+    if (book.title !== undefined && book.title !== null) {
+        updateData.title = book.title;
+    }
+    if (book.author !== undefined && book.author !== null) {
+        updateData.author = book.author;
+    }
+    if (book.publishedYear !== undefined && book.publishedYear !== null) {
+        updateData.publishedYear = book.publishedYear;
+    }
+    if (book.isAvailable !== undefined && book.isAvailable !== null) {
+        updateData.isAvailable = book.isAvailable;
+    }
+
+    const updatedBook = await db.update(books).set(updateData).where(eq(books.id, id));
+    return updatedBook;
+}

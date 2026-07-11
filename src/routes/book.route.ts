@@ -18,6 +18,14 @@ export const createBookSchema = z.object({
     publishedYear : z.number().optional(),
 })
 
+export const editBookSchema = z.object({
+    id : z.string(),
+    title: z.string().optional(),
+    author : z.string().optional(),
+    publishedYear : z.number().optional(),
+    isAvailable : z.boolean().optional(),
+})
+
 export const getAllBooksRoute = createRoute({
   operationId: 'getAllBooks',
   tags: ['books'],
@@ -97,4 +105,33 @@ export const createBookRoute = createRoute({
         400: createErrorResponse('UNION', 'Bad request error'),
         500: createErrorResponse('GENERIC', 'Internal server error'),
     },
+});
+
+export const editBookRoute = createRoute({
+  operationId: 'editBook',
+  tags: ['books'],
+  method: 'patch',
+  path: '/books/:id',
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: editBookSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: bookSchema,
+        },
+      },
+      description: 'Book updated successfully',
+    },
+    400: createErrorResponse('UNION', 'Bad request error'),
+    404: createErrorResponse('GENERIC', 'Book not found'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
 });
