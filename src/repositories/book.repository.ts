@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { db } from '~/db/drizzle';
 import { books } from '~/db/schema/book.schema';
-import { BookSchema, type CreateBookInput, type UpdateBook, type UpdateBookInput } from '~/types/book.type';
+import { type CreateBookInput, type UpdateBook} from '~/types/book.type';
 
 export const getBooks = async(isAvailable?: boolean) => {
     if (isAvailable !== undefined) {
