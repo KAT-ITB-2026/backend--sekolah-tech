@@ -18,22 +18,22 @@ export const GetBooksQuerySchema = z.object({
         if (value === "false") return false;
         return value;
     }, z.boolean().optional()),
-});
+}).openapi('GetBooksQuery');
 
 export const GetBookByIdParamsSchema = z.object({
     id : z.string().max(128)
-});
+}).openapi('GetBookByIdParams');
 
 export const CreateBookBodySchema = z.object({
     title : z.string().nonempty(),
     author : z.string().nonempty(),
     publishedYear: z.number().int().optional()
-});
+}).openapi('CreateBookBody');
 export type CreateBookInput = z.infer<typeof CreateBookBodySchema>;
 
 export const UpdateBookByIdParamsSchema = z.object({
     id : z.string().max(128)
-});
+}).openapi('UpdateBookByIdParams');
 export const UpdateBookByIdBodySchema = z.object({
     title: z.string().optional().nullable()
         .transform((val) => (val === "" || val === null ? undefined : val)),
@@ -46,7 +46,7 @@ export const UpdateBookByIdBodySchema = z.object({
         
     publishedYear: z.number().int().optional().nullable()
         .transform((val) => (val === null ? undefined : val))
-});
+}).openapi('UpdateBookByIdBody');
 export type UpdateBookInput = z.infer<typeof UpdateBookByIdBodySchema>;
 export const UpdateBookSchema = z.object({
     id: z.string().max(128),
@@ -56,4 +56,4 @@ export type UpdateBook = z.infer<typeof UpdateBookSchema>;
 
 export const DeleteBookByIdParamsSchema = z.object({
     id : z.string().max(128)
-});
+}).openapi('DeleteBookByIdParams');

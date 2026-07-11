@@ -1,6 +1,5 @@
 import { createBook, getBookById, getBooks, deleteBook, updateBook } from '~/repositories/book.repository';
 import { createBookRoute, deleteBookRoute, getBookByIdRoute, getBooksRoute, updateBookRoute } from '~/routes/book.route';
-import type { UpdateBookInput, UpdateBook } from '~/types/book.type';
 import { createRouter } from '~/utils/router-factory';
 export const booksRouter = createRouter();
 
