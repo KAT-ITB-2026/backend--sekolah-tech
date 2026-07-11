@@ -73,3 +73,15 @@ export const UpdateBookResponseSchema = z
     data: BookSchema,
   })
   .openapi('UpdateBookResponse');
+
+export const DeleteBookParamsSchema = z
+  .object({
+    id: z.string(),
+  })
+  .openapi('DeleteBookParams');
+
+export const DeleteBookResponseSchema = z
+  .object({
+    message: z.string(),
+  })
+  .openapi('DeleteBookResponse');

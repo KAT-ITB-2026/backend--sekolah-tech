@@ -9,6 +9,8 @@ import {
   UpdateBookParamsSchema,
   UpdateBookBodySchema,
   UpdateBookResponseSchema,
+  DeleteBookParamsSchema,
+  DeleteBookResponseSchema,
 } from '~/types/book.type';
 import { createErrorResponse } from '~/utils/error-response-factory';
 
@@ -72,7 +74,6 @@ export const createBookRoute = createRoute({
     },
   },
   responses: {
-    // 201: Successfully created (Sesuai panduan di PDF halaman 9)
     201: {
       content: {
         'application/json': {
@@ -109,6 +110,29 @@ export const updateBookRoute = createRoute({
         },
       },
       description: 'Successfully updated the book',
+    },
+    400: createErrorResponse('VALIDATION', 'Validation error'),
+    404: createErrorResponse('GENERIC', 'Book not found'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
+
+export const deleteBookRoute = createRoute({
+  operationId: 'deleteBook',
+  tags: ['books'],
+  method: 'delete',
+  path: '/books/{id}',
+  request: {
+    params: DeleteBookParamsSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: DeleteBookResponseSchema,
+        },
+      },
+      description: 'Successfully deleted the book',
     },
     400: createErrorResponse('VALIDATION', 'Validation error'),
     404: createErrorResponse('GENERIC', 'Book not found'),

@@ -63,3 +63,12 @@ export const updateBook = async (
 
   return first(result);
 };
+
+export const deleteBook = async (id: string) => {
+  const result = await db
+    .delete(books)
+    .where(eq(books.id, id))
+    .returning();
+
+  return first(result);
+};

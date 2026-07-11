@@ -1,5 +1,5 @@
-import { getBookById, getBooks, createBook, updateBook } from '~/repositories/book.repository';
-import { getBookByIdRoute, getBooksRoute, createBookRoute, updateBookRoute } from '~/routes/book.route';
+import { getBookById, getBooks, createBook, updateBook, deleteBook } from '~/repositories/book.repository';
+import { getBookByIdRoute, getBooksRoute, createBookRoute, updateBookRoute, deleteBookRoute } from '~/routes/book.route';
 import { createRouter } from '~/utils/router-factory';
 
 export const bookRouter = createRouter();
@@ -106,6 +106,30 @@ bookRouter.openapi(updateBookRoute, async (c) => {
     return c.json(
       {
         data: formattedBook,
+      },
+      200,
+    );
+  } catch (error) {
+    if (error instanceof Error) {
+      return c.json({ error: error.message }, 500);
+    }
+
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+bookRouter.openapi(deleteBookRoute, async (c) => {
+  try {
+    const { id } = c.req.valid('param');
+    const deletedBook = await deleteBook(id);
+
+    if (!deletedBook) {
+      return c.json({ error: 'Book not found' }, 404);
+    }
+
+    return c.json(
+      {
+        message: 'Book successfully deleted',
       },
       200,
     );
