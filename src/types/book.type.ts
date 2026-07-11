@@ -12,6 +12,18 @@ export const BookSchema = z
   })
   .openapi('Book');
 
-export const BookListResponseSchema = z.array(BookSchema).openapi('BookListResponse');
+export const CreateBookSchema = z
+  .object({
+    title: z.string().min(1),
+    author: z.string().min(1),
+    publishedYear: z.number().int().positive().optional(),
+  })
+  .openapi('CreateBook');
 
+export const CreateBookParamsSchema = z.object({
+  body: CreateBookSchema,
+});
+
+export const BookListResponseSchema = z.array(BookSchema).openapi('BookListResponse');
 export const BookResponseSchema = BookSchema.openapi('BookResponse');
+export const CreateBookResponseSchema = BookSchema.openapi('CreateBookResponse');

@@ -1,10 +1,15 @@
 import { createRoute, z } from '@hono/zod-openapi';
 
-import { BookListResponseSchema, BookResponseSchema } from '~/types/book.type';
+import {
+  BookListResponseSchema,
+  BookResponseSchema,
+  CreateBookResponseSchema,
+  CreateBookSchema,
+} from '~/types/book.type';
 import { createErrorResponse } from '~/utils/error-response-factory';
 
-export const getAllBooksRoute = createRoute({
-  operationId: 'getAllBooks',
+export const getBooksRoute = createRoute({
+  operationId: 'getBooks',
   tags: ['books'],
   method: 'get',
   path: '/books',
@@ -22,8 +27,8 @@ export const getAllBooksRoute = createRoute({
   },
 });
 
-export const getBookByIdRoute = createRoute({
-  operationId: 'getBookById',
+export const getBookRoute = createRoute({
+  operationId: 'getBook',
   tags: ['books'],
   method: 'get',
   path: '/books/{id}',
@@ -42,6 +47,34 @@ export const getBookByIdRoute = createRoute({
       description: 'Get a book by id',
     },
     404: createErrorResponse('GENERIC', 'Book not found'),
+    400: createErrorResponse('UNION', 'Bad request error'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
+
+export const createBookRoute = createRoute({
+  operationId: 'createBook',
+  tags: ['books'],
+  method: 'post',
+  path: '/books',
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: CreateBookSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    201: {
+      content: {
+        'application/json': {
+          schema: CreateBookResponseSchema,
+        },
+      },
+      description: 'Create a new book',
+    },
     400: createErrorResponse('UNION', 'Bad request error'),
     500: createErrorResponse('GENERIC', 'Internal server error'),
   },
