@@ -1,0 +1,47 @@
+import { createRoute, z } from '@hono/zod-openapi';
+import { createErrorResponse } from '~/utils/error-response-factory';
+import {  GetBooksQuerySchema, BookSchema, GetBookByIdParamsSchema } from 'src/types/book.type'
+
+export const getBooksRoute = createRoute({
+    operationId: 'getBooks',
+    tags: ['books'],
+    method: 'get',
+    path: '/books',
+    request : {
+        query : GetBooksQuerySchema
+    },
+    responses: {
+    200: {
+        content: {
+        'application/json': {
+            schema: z.array(BookSchema),
+        },
+        },
+        description: 'Get all books',
+        },
+    400: createErrorResponse('UNION', 'Bad request error'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+    },
+});
+
+export const getBookByIdRoute = createRoute({
+    operationId: 'getBookById',
+    tags: ['books'],
+    method: 'get',
+    path: '/books/{id}',
+    request : {
+        params : GetBookByIdParamsSchema
+    },
+    responses: {
+    200: {
+        content: {
+        'application/json': {
+            schema: BookSchema
+        },
+        },
+        description: 'Get a book',
+        },
+    400: createErrorResponse('UNION', 'Bad request error'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+    },
+})
