@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { db } from '~/db/drizzle';
 import { books } from '~/db/schema/book.schema';
-import { BookSchema, type CreateBookInput } from '~/types/book.type';
+import { BookSchema, type CreateBookInput, type UpdateBook, type UpdateBookInput } from '~/types/book.type';
 
 export const getBooks = async(isAvailable?: boolean) => {
     if (isAvailable !== undefined) {
@@ -11,17 +11,31 @@ export const getBooks = async(isAvailable?: boolean) => {
 };
 
 export const getBookById = async(id : string) => {
-    return await db.select().from(books).where(eq(books.id, id)).limit(1);
+    const [book] = await db.select().from(books).where(eq(books.id, id));
+
+    return book;
 };
 
 export const createBook = async(book : CreateBookInput) => {
-    const result = await db.insert(books).values({
+    const [result] = await db.insert(books).values({
         title : book.title,
         author : book.author,
         publishedYear : book.publishedYear
     }).returning();
-    return result[0];
+    return result;
 };
+
+export const updateBook = async(book : UpdateBook) => {
+    const [updatedBook] = await db
+        .update(books)
+        .set({
+            ...book.data,
+            updatedAt: new Date()
+        })
+        .where(eq(books.id, book.id))
+        .returning();
+    return updatedBook;
+}
 
 export const deleteBook = async(id : string) => {
     await db.delete(books).where(eq(books.id, id));

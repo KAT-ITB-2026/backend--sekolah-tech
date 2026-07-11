@@ -1,5 +1,6 @@
-import { createBook, getBookById, getBooks, deleteBook } from '~/repositories/book.repository';
-import { createBookRoute, deleteBookRoute, getBookByIdRoute, getBooksRoute } from '~/routes/book.route';
+import { createBook, getBookById, getBooks, deleteBook, updateBook } from '~/repositories/book.repository';
+import { createBookRoute, deleteBookRoute, getBookByIdRoute, getBooksRoute, updateBookRoute } from '~/routes/book.route';
+import type { UpdateBookInput, UpdateBook } from '~/types/book.type';
 import { createRouter } from '~/utils/router-factory';
 export const booksRouter = createRouter();
 
@@ -35,6 +36,23 @@ booksRouter.openapi(createBookRoute, async(c) => {
         const body = c.req.valid("json");
         const book = await createBook(body);
         return c.json(book, 201);
+    } catch (error) {
+        if (error instanceof Error) {
+            return c.json({error: error.message}, 500);
+        }
+        return c.json({error: 'Internal server error'}, 500);
+    }
+});
+
+booksRouter.openapi(updateBookRoute, async(c) => {
+    try {
+        const { id } = c.req.valid("param");
+        const bookInputData  = c.req.valid("json");
+        const book = await updateBook({
+            id: id,
+            data: bookInputData
+        });
+        return c.json(book, 200);
     } catch (error) {
         if (error instanceof Error) {
             return c.json({error: error.message}, 500);

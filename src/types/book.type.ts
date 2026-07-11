@@ -31,12 +31,28 @@ export const CreateBookBodySchema = z.object({
 });
 export type CreateBookInput = z.infer<typeof CreateBookBodySchema>;
 
-export const UpdateBookByIdBodySchema = z.object({
-    title : z.string().nullable().optional(),
-    author : z.string().nullable().optional(),
-    isAvailable : z.boolean().nullable().optional(),
-    publishedYear : z.number().int().nullable().optional()
+export const UpdateBookByIdParamsSchema = z.object({
+    id : z.string().max(128)
 });
+export const UpdateBookByIdBodySchema = z.object({
+    title: z.string().optional().nullable()
+        .transform((val) => (val === "" || val === null ? undefined : val)),
+        
+    author: z.string().optional().nullable()
+        .transform((val) => (val === "" || val === null ? undefined : val)),
+        
+    isAvailable: z.boolean().optional().nullable()
+        .transform((val) => (val === null ? undefined : val)),
+        
+    publishedYear: z.number().int().optional().nullable()
+        .transform((val) => (val === null ? undefined : val))
+});
+export type UpdateBookInput = z.infer<typeof UpdateBookByIdBodySchema>;
+export const UpdateBookSchema = z.object({
+    id: z.string().max(128),
+    data: UpdateBookByIdBodySchema
+});
+export type UpdateBook = z.infer<typeof UpdateBookSchema>;
 
 export const DeleteBookByIdParamsSchema = z.object({
     id : z.string().max(128)
