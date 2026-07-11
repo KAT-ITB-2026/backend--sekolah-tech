@@ -109,3 +109,78 @@ export const createBookRoute = createRoute({
     500: createErrorResponse('GENERIC', 'Internal server error'),
   },
 });
+
+export const updateBookRoute = createRoute({
+  operationId: 'updateBook',
+  tags: ['books'],
+  method: 'patch',
+  path: '/books/{id}',
+  request: {
+    params: z.object({
+      id: z.string().openapi({
+        param: {
+          name: 'id',
+          in: 'path',
+          required: true,
+          description: 'The ID of the book to update',
+        },
+      }),
+    }),
+    body: {
+      content: {
+        'application/json': {
+          schema: z.object({
+            title: z.string().nullable().optional(),
+            author: z.string().nullable().optional(),
+            isAvailable: z.boolean().nullable().optional(),
+            publishedYear: z.number().nullable().optional(),
+          }),
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: BookSchema,
+        },
+      },
+      description: 'Book updated successfully',
+    },
+    400: createErrorResponse('VALIDATION', 'Validation error'),
+    404: createErrorResponse('GENERIC', 'Book not found'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
+
+export const deleteBookRoute = createRoute({
+  operationId: 'deleteBook',
+  tags: ['books'],
+  method: 'delete',
+  path: '/books/{id}',
+  request: {
+    params: z.object({
+      id: z.string().openapi({
+        param: {
+          name: 'id',
+          in: 'path',
+          required: true,
+          description: 'The ID of the book to delete',
+        },
+      }),
+    }),
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: BookSchema,
+        },
+      },
+      description: 'Book deleted successfully',
+    },
+    404: createErrorResponse('GENERIC', 'Book not found'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
