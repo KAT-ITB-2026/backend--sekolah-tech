@@ -41,3 +41,8 @@ export const editBook = async (id: string, book: { title?: string, author?: stri
     const updatedBook = await db.update(books).set(updateData).where(eq(books.id, id));
     return updatedBook;
 }
+
+export const deleteBook = async (id: string) => {
+    const deletedBook = await db.delete(books).where(eq(books.id, id));
+    return deletedBook;
+}
