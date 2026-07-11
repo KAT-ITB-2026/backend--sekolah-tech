@@ -76,3 +76,36 @@ export const getBookByIdRoute = createRoute({
     500: createErrorResponse('GENERIC', 'Internal server error'),
   },
 });
+
+export const createBookRoute = createRoute({
+  operationId: 'createBook',
+  tags: ['books'],
+  method: 'post',
+  path: '/books',
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: z.object({
+            title: z.string().min(1, 'Title is required'),
+            author: z.string().min(1, 'Author is required'),
+            publishedYear: z.number().nullable().optional(),
+          }),
+        },
+      },
+      required: true,
+    },
+  },
+  responses: {
+    201: {
+      content: {
+        'application/json': {
+          schema: BookSchema,
+        },
+      },
+      description: 'Book created successfully',
+    },
+    400: createErrorResponse('VALIDATION', 'Validation error'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
