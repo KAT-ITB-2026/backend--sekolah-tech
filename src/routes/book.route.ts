@@ -97,3 +97,19 @@ export const updateBookRoute = createRoute({
         500: createErrorResponse('GENERIC', 'Internal server error'),
     },
 });
+
+export const deleteBookRoute = createRoute({
+    method : 'delete',
+    path : '/books/{id}',
+    request : {
+        params : GetBooksByIdParamsSchema,
+    },
+    responses:{
+        204: {
+            description : 'Book deleted!'
+        },
+        400: createErrorResponse('UNION', 'Bad request error'),
+        404: createErrorResponse('UNION','Not found'),
+        500: createErrorResponse('GENERIC', 'Internal server error'),
+    },
+});

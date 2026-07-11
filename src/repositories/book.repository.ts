@@ -39,3 +39,8 @@ export const updateBook = async (
     const result = await db.update(books).set(updateData).where(eq(books.id, Id)).returning();
     return result[0];
 }
+
+export const deleteBook = async (Id: string) => {
+    const result = await db.delete(books).where(eq(books.id, Id)).returning();
+    return result[0];
+}
