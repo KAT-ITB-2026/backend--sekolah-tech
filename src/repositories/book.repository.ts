@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { count, eq, sql } from 'drizzle-orm';
 import { db } from '~/db/drizzle';
 import { first, firstSure } from '~/db/helper';
 import { books } from '~/db/schema/book.schema';
@@ -55,4 +55,25 @@ export const updateBook = async (id: string, input: UpdateBookInput) => {
     .where(eq(books.id, id))
     .returning();
   return first(result);
+};
+
+export const deleteBook = async (id: string) => {
+  const result = await db
+    .delete(books)
+    .where(eq(books.id, id))
+    .returning({ id: books.id });
+  return first(result);
+};
+
+export const getLibraryStatus = async () => {
+  const [row] = await db
+    .select({
+      totalBooks: count(),
+      totalAvailable: count(sql`case when ${books.isAvailable} then 1 end`),
+    })
+    .from(books);
+  return {
+    totalBooks: row.totalBooks,
+    totalAvailable: row.totalAvailable,
+  };
 };

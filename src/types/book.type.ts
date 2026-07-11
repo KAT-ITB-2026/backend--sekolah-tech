@@ -37,3 +37,10 @@ export const UpdateBookSchema = z.object({
   isAvailable: z.boolean().nullable().optional(),
   publishedYear: z.number().int().nullable().optional(),
 });
+
+export const LibraryStatusSchema = z
+  .object({
+    totalBooks: z.number().int(),
+    totalAvailable: z.number().int(),
+  })
+  .openapi('LibraryStatus');

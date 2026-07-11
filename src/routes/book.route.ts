@@ -3,6 +3,7 @@ import {
   BookSchema,
   CreateBookSchema,
   GetBookByIdSchema,
+  LibraryStatusSchema,
   ListBookSchema,
   QueryBookSchema,
   UpdateBookSchema,
@@ -110,6 +111,42 @@ export const updateBookRoute = createRoute({
     },
     404: createErrorResponse('GENERIC', 'Book not found'),
     400: createErrorResponse('UNION', 'Bad request error'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
+
+export const deleteBookRoute = createRoute({
+  operationId: 'deleteBook',
+  tags: ['books'],
+  method: 'delete',
+  path: '/books/{id}',
+  request: {
+    params: GetBookByIdSchema,
+  },
+  responses: {
+    204: {
+      description: 'Book deleted',
+    },
+    404: createErrorResponse('GENERIC', 'Book not found'),
+    400: createErrorResponse('UNION', 'Bad request error'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
+
+export const getLibraryStatusRoute = createRoute({
+  operationId: 'getLibraryStatus',
+  tags: ['books'],
+  method: 'get',
+  path: '/library/status',
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: LibraryStatusSchema,
+        },
+      },
+      description: 'Library statistics',
+    },
     500: createErrorResponse('GENERIC', 'Internal server error'),
   },
 });
