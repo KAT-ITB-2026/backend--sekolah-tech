@@ -1,0 +1,10 @@
+import { eq } from 'drizzle-orm';
+import { db } from '~/db/drizzle';
+import { books } from '~/db/schema/book.schema';
+
+export async function getBooks(isAvailable?: boolean) {
+  if (isAvailable !== undefined) {
+    return db.select().from(books).where(eq(books.isAvailable, isAvailable));
+  }
+  return db.select().from(books);
+}

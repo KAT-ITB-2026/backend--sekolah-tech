@@ -35,7 +35,11 @@ app.doc('/openapi.json', {
     version: '1.0',
     title: 'Sekolah Backend Technology API',
   },
-  tags: [{ name: 'health', description: 'Health Check API' }],
+  tags: [
+    { name: 'health', description: 'Health Check API' },
+    { name: 'library', description: 'Library statistics API' },
+    { name: 'books', description: 'Books CRUD API' },
+  ],
 });
 
 app.get(
