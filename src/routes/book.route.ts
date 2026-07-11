@@ -6,6 +6,9 @@ import {
   GetBooksResponseSchema,
   CreateBookBodySchema,
   CreateBookResponseSchema,
+  UpdateBookParamsSchema,
+  UpdateBookBodySchema,
+  UpdateBookResponseSchema,
 } from '~/types/book.type';
 import { createErrorResponse } from '~/utils/error-response-factory';
 
@@ -79,6 +82,36 @@ export const createBookRoute = createRoute({
       description: 'Successfully created a new book',
     },
     400: createErrorResponse('VALIDATION', 'Validation error'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
+
+export const updateBookRoute = createRoute({
+  operationId: 'updateBook',
+  tags: ['books'],
+  method: 'patch',
+  path: '/books/{id}',
+  request: {
+    params: UpdateBookParamsSchema,
+    body: {
+      content: {
+        'application/json': {
+          schema: UpdateBookBodySchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: UpdateBookResponseSchema,
+        },
+      },
+      description: 'Successfully updated the book',
+    },
+    400: createErrorResponse('VALIDATION', 'Validation error'),
+    404: createErrorResponse('GENERIC', 'Book not found'),
     500: createErrorResponse('GENERIC', 'Internal server error'),
   },
 });

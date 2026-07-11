@@ -52,3 +52,24 @@ export const CreateBookResponseSchema = z
     data: BookSchema,
   })
   .openapi('CreateBookResponse');
+
+export const UpdateBookParamsSchema = z
+  .object({
+    id: z.string(),
+  })
+  .openapi('UpdateBookParams');
+
+export const UpdateBookBodySchema = z
+  .object({
+    title: z.string().nullable().optional(),
+    author: z.string().nullable().optional(),
+    isAvailable: z.boolean().nullable().optional(),
+    publishedYear: z.number().int().nullable().optional(),
+  })
+  .openapi('UpdateBookBody');
+
+export const UpdateBookResponseSchema = z
+  .object({
+    data: BookSchema,
+  })
+  .openapi('UpdateBookResponse');

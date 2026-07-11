@@ -36,3 +36,30 @@ export const createBook = async (payload: {
 
   return firstSure(result); 
 };
+
+export const updateBook = async (
+  id: string,
+  payload: {
+    title?: string | null;
+    author?: string | null;
+    isAvailable?: boolean | null;
+    publishedYear?: number | null;
+  }
+) => {
+  const updateData: Record<string, any> = {
+    updatedAt: new Date(), 
+  };
+
+  if (payload.title !== undefined && payload.title !== null) updateData.title = payload.title;
+  if (payload.author !== undefined && payload.author !== null) updateData.author = payload.author;
+  if (payload.isAvailable !== undefined && payload.isAvailable !== null) updateData.isAvailable = payload.isAvailable;
+  if (payload.publishedYear !== undefined && payload.publishedYear !== null) updateData.publishedYear = payload.publishedYear;
+
+  const result = await db
+    .update(books)
+    .set(updateData)
+    .where(eq(books.id, id))
+    .returning();
+
+  return first(result);
+};
