@@ -23,3 +23,9 @@ export const BooksResponseSchema = z.object({
 export const GetBooksByIdParamsSchema = z.object({
     id : z.string(),
 });
+
+export const CreateBookBodySchema = z.object({
+    title: z.string(),
+    author: z.string(),
+    publishedYear: z.number().int().optional(),
+}).openapi("CreateBookBody");
