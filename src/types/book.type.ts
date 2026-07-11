@@ -20,10 +20,17 @@ export const CreateBookSchema = z
   })
   .openapi('CreateBook');
 
-export const CreateBookParamsSchema = z.object({
-  body: CreateBookSchema,
-});
+export const UpdateBookSchema = z
+  .object({
+    title: z.string().min(1).optional(),
+    author: z.string().min(1).optional(),
+    publishedYear: z.number().int().positive().optional(),
+    isAvailable: z.boolean().optional(),
+  })
+  .openapi('UpdateBook');
 
 export const BookListResponseSchema = z.array(BookSchema).openapi('BookListResponse');
 export const BookResponseSchema = BookSchema.openapi('BookResponse');
 export const CreateBookResponseSchema = BookSchema.openapi('CreateBookResponse');
+export const UpdateBookResponseSchema = BookSchema.openapi('UpdateBookResponse');
+export const DeleteBookResponseSchema = BookSchema.openapi('DeleteBookResponse');

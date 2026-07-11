@@ -13,12 +13,30 @@ export const getBookById = async(id:string) => {
     const [book] = await db.select().from(books).where(eq(books.id, id));
     return book ?? null;
 }
-export const createBook =  async(book: {title: string, author: string, publishedYear?: number}) => {
-    return await db.insert(books).values({...book, isAvailable: true}).returning();
+export const createBook = async(book: {title: string, author: string, publishedYear?: number}) => {
+    const [createdBook] = await db.insert(books).values({...book, isAvailable: true}).returning();
+
+    return createdBook ?? null;
 }
-export const editBook = async(id:string, book:{title:string, author:string, publishedYear:number,isAvailable:boolean}) =>{
-    return await db.update(books).set(book).where(eq(books.id, id)).returning();
+export const editBook = async(
+  id: string,
+  book: Partial<{
+    title: string;
+    author: string;
+    publishedYear: number;
+    isAvailable: boolean;
+  }>,
+) => {
+  const [updatedBook] = await db
+    .update(books)
+    .set(book)
+    .where(eq(books.id, id))
+    .returning();
+
+  return updatedBook ?? null;
 }
-export const deleteBook = async(id: string)=> {
-    return await db.delete(books).where(eq(books.id, id)).returning();
+export const deleteBook = async(id: string) => {
+    const [deletedBook] = await db.delete(books).where(eq(books.id, id)).returning();
+
+    return deletedBook ?? null;
 }

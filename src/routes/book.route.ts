@@ -5,6 +5,9 @@ import {
   BookResponseSchema,
   CreateBookResponseSchema,
   CreateBookSchema,
+  DeleteBookResponseSchema,
+  UpdateBookResponseSchema,
+  UpdateBookSchema,
 } from '~/types/book.type';
 import { createErrorResponse } from '~/utils/error-response-factory';
 
@@ -75,6 +78,63 @@ export const createBookRoute = createRoute({
       },
       description: 'Create a new book',
     },
+    400: createErrorResponse('UNION', 'Bad request error'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
+
+export const updateBookRoute = createRoute({
+  operationId: 'updateBook',
+  tags: ['books'],
+  method: 'patch',
+  path: '/books/{id}',
+  request: {
+    params: z.object({
+      id: z.string().min(1),
+    }),
+    body: {
+      content: {
+        'application/json': {
+          schema: UpdateBookSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: UpdateBookResponseSchema,
+        },
+      },
+      description: 'Update a book by id',
+    },
+    404: createErrorResponse('GENERIC', 'Book not found'),
+    400: createErrorResponse('UNION', 'Bad request error'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
+
+export const deleteBookRoute = createRoute({
+  operationId: 'deleteBook',
+  tags: ['books'],
+  method: 'delete',
+  path: '/books/{id}',
+  request: {
+    params: z.object({
+      id: z.string().min(1),
+    }),
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: DeleteBookResponseSchema,
+        },
+      },
+      description: 'Delete a book by id',
+    },
+    404: createErrorResponse('GENERIC', 'Book not found'),
     400: createErrorResponse('UNION', 'Bad request error'),
     500: createErrorResponse('GENERIC', 'Internal server error'),
   },

@@ -1,8 +1,10 @@
-import { createBook, getAllBooks, getBookById } from '~/repositories/book.repository';
+import { createBook, deleteBook, editBook, getAllBooks, getBookById } from '~/repositories/book.repository';
 import {
   createBookRoute,
+  deleteBookRoute,
   getBookRoute,
   getBooksRoute,
+  updateBookRoute,
 } from '~/routes/book.route';
 import { createRouter } from '~/utils/router-factory';
 
@@ -44,6 +46,43 @@ bookRouter.openapi(createBookRoute, async (c) => {
     const newBook = await createBook(data);
 
     return c.json(newBook, 201);
+  } catch (error) {
+    if (error instanceof Error) {
+      return c.json({ error: error.message }, 500);
+    }
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+bookRouter.openapi(updateBookRoute, async (c) => {
+  try {
+    const { id } = c.req.valid('param');
+    const data = await c.req.valid('json');
+    const updatedBook = await editBook(id, data);
+
+    if (!updatedBook) {
+      return c.json({ error: 'Book not found' }, 404);
+    }
+
+    return c.json(updatedBook, 200);
+  } catch (error) {
+    if (error instanceof Error) {
+      return c.json({ error: error.message }, 500);
+    }
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+});
+
+bookRouter.openapi(deleteBookRoute, async (c) => {
+  try {
+    const { id } = c.req.valid('param');
+    const deletedBook = await deleteBook(id);
+
+    if (!deletedBook) {
+      return c.json({ error: 'Book not found' }, 404);
+    }
+
+    return c.json(deletedBook, 200);
   } catch (error) {
     if (error instanceof Error) {
       return c.json({ error: error.message }, 500);
