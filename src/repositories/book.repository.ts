@@ -21,4 +21,8 @@ export const createBook = async(book : CreateBookInput) => {
         publishedYear : book.publishedYear
     }).returning();
     return result[0];
-}
+};
+
+export const deleteBook = async(id : string) => {
+    await db.delete(books).where(eq(books.id, id));
+};

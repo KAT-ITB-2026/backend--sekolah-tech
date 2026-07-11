@@ -28,7 +28,7 @@ export const CreateBookBodySchema = z.object({
     title : z.string().nonempty(),
     author : z.string().nonempty(),
     publishedYear: z.number().int().optional()
-})
+});
 export type CreateBookInput = z.infer<typeof CreateBookBodySchema>;
 
 export const UpdateBookByIdBodySchema = z.object({
@@ -36,8 +36,8 @@ export const UpdateBookByIdBodySchema = z.object({
     author : z.string().nullable().optional(),
     isAvailable : z.boolean().nullable().optional(),
     publishedYear : z.number().int().nullable().optional()
-})
+});
 
 export const DeleteBookByIdParamsSchema = z.object({
     id : z.string().max(128)
-})
+});
