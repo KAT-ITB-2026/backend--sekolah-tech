@@ -45,3 +45,34 @@ export const getBooksRoute = createRoute({
     500: createErrorResponse('GENERIC', 'Internal server error'),
   },
 });
+
+export const getBookByIdRoute = createRoute({
+  operationId: 'getBookById',
+  tags: ['books'],
+  method: 'get',
+  path: '/books/{id}',
+  request: {
+    params: z.object({
+      id: z.string().openapi({
+        param: {
+          name: 'id',
+          in: 'path',
+          required: true,
+          description: 'The ID of the book to retrieve',
+        },
+      }),
+    }),
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: BookSchema,
+        },
+      },
+      description: 'Retrieve a specific book by ID',
+    },
+    404: createErrorResponse('GENERIC', 'Book not found'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});

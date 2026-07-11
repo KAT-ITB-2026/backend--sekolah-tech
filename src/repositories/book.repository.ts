@@ -8,3 +8,8 @@ export async function getBooks(isAvailable?: boolean) {
   }
   return db.select().from(books);
 }
+
+export async function getBookById(id: string) {
+  const [book] = await db.select().from(books).where(eq(books.id, id));
+  return book;
+}
