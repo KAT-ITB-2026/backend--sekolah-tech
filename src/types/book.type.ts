@@ -13,3 +13,5 @@ export const BookSchema = z
   .openapi('Book');
 
 export const BookListResponseSchema = z.array(BookSchema).openapi('BookListResponse');
+
+export const BookResponseSchema = BookSchema.openapi('BookResponse');
