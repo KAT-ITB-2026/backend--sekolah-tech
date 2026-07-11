@@ -9,3 +9,8 @@ export const getAllBooks = async (isAvailable?: boolean) => {
     }
     return db.select().from(books).where(eq(books.isAvailable,isAvailable));
 }
+
+export const getBooksById = async (Id : string) =>{
+    const result = await db.select().from(books).where(eq(books.id,Id)).limit(1);
+    return result[0];
+}

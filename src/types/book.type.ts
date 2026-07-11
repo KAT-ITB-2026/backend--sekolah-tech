@@ -19,3 +19,7 @@ export const GetBooksQuerySchema = z.object({
 export const BooksResponseSchema = z.object({
     books : z.array(BookSchema),
 })
+
+export const GetBooksByIdParamsSchema = z.object({
+    id : z.string(),
+});
