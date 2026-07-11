@@ -38,3 +38,17 @@ export const GetBookByIdResponseSchema = z
     data: BookSchema,
   })
   .openapi('GetBookByIdResponse');
+
+export const CreateBookBodySchema = z
+  .object({
+    title: z.string(),
+    author: z.string(),
+    publishedYear: z.number().int().optional(), 
+  })
+  .openapi('CreateBookBody');
+
+export const CreateBookResponseSchema = z
+  .object({
+    data: BookSchema,
+  })
+  .openapi('CreateBookResponse');

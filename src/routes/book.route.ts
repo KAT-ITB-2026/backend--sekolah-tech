@@ -4,6 +4,8 @@ import {
   GetBookByIdResponseSchema,
   GetBooksQuerySchema,
   GetBooksResponseSchema,
+  CreateBookBodySchema,
+  CreateBookResponseSchema,
 } from '~/types/book.type';
 import { createErrorResponse } from '~/utils/error-response-factory';
 
@@ -48,6 +50,35 @@ export const getBookByIdRoute = createRoute({
     },
     400: createErrorResponse('VALIDATION', 'Validation error'),
     404: createErrorResponse('GENERIC', 'Book not found'),
+    500: createErrorResponse('GENERIC', 'Internal server error'),
+  },
+});
+
+export const createBookRoute = createRoute({
+  operationId: 'createBook',
+  tags: ['books'],
+  method: 'post',
+  path: '/books',
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: CreateBookBodySchema,
+        },
+      },
+    },
+  },
+  responses: {
+    // 201: Successfully created (Sesuai panduan di PDF halaman 9)
+    201: {
+      content: {
+        'application/json': {
+          schema: CreateBookResponseSchema,
+        },
+      },
+      description: 'Successfully created a new book',
+    },
+    400: createErrorResponse('VALIDATION', 'Validation error'),
     500: createErrorResponse('GENERIC', 'Internal server error'),
   },
 });
